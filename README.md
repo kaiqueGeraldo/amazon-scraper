@@ -1,6 +1,6 @@
-# 🛍️ Amazon Scraper
+# 🏍️ Amazon Scraper
 
-Fullstack application that allows you to search for Amazon products based on a keyword. Results are displayed with image, title, rating, and reviews, and users can mark products as favorites with local persistence.
+Fullstack application that allows you to search for Amazon products based on a keyword. Results are displayed with image, title, rating (with stars), and reviews, and users can mark products as favorites with local persistence.
 
 ---
 
@@ -30,6 +30,7 @@ amazon-scraper/
 - React (Next.js App Router with "use client")
 - Tailwind CSS
 - TypeScript
+- LocalStorage API
 
 ---
 
@@ -62,7 +63,8 @@ GET /api/scrape?keyword=mouse
 ### 3. Run the frontend
 
 ```bash
-cd.. cd amazon-scraper-frontend
+cd ..
+cd amazon-scraper-frontend
 npm install
 npm run dev
 ```
@@ -77,11 +79,12 @@ Access: `http://localhost:3000`
 - Display results with:
   - Image
   - Title
-  - Rating
+  - Rating (formatted as `x.x/5` with stars)
   - Number of reviews
 - Mark and unmark products as favorites
 - Favorites are persisted using `localStorage`
 - Filters out invalid products like "Featured from Amazon brands" or "Sponsored"
+- Responsive UI with clean navigation between search and favorites
 
 ---
 
@@ -105,8 +108,10 @@ Access: `http://localhost:3000`
 ### Frontend (`/amazon-scraper-frontend`)
 
 - `page.tsx` → main page with search and favorites logic
-- `components/searchBar.tsx` → search input with button
-- `components/productGrid.tsx` → responsive product grid
+- `components/Navbar.tsx` → navigation bar between pages
+- `components/SearchBar.tsx` → search input with button
+- `components/ProductGrid.tsx` → responsive product grid
+- `components/Rating.tsx` → dynamic rating display using stars
 - `types/product.ts` → product type definition
 
 ---
@@ -114,10 +119,10 @@ Access: `http://localhost:3000`
 ## 🖼️ Screenshots
 
 ### 🔎 Product Search Page
-![Main Page](https://github.com/user-attachments/assets/90840b93-e839-4b25-819c-759530e4d2b2)
+![Main Page](https://github.com/user-attachments/assets/61bd2438-c33c-4b1f-9297-d78876853095)
 
 ### ⭐ Favorites Section
-![Favorites](https://github.com/user-attachments/assets/74fa71ca-6e63-4cc7-81d1-558748f18265)
+![Favorites](https://github.com/user-attachments/assets/f426e3af-95a4-4973-b815-a56550905706)
 
 ---
 
