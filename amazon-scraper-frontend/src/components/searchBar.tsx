@@ -14,7 +14,7 @@ const SearchBar = ({
   fetchProducts,
 }: SearchBarProps) => {
   return (
-    <div className="flex items-center gap-4 mb-6">
+    <form className="flex items-center gap-4 mb-6" onSubmit={fetchProducts}>
       <input
         type="text"
         placeholder="Enter the keyword"
@@ -25,11 +25,11 @@ const SearchBar = ({
       <button
         onClick={fetchProducts}
         disabled={!keyword.trim() || loading}
-        className="bg-blue-600 text-white px-4 py-2 rounded disabled:opacity-50 cursor-pointer"
+        className="bg-blue-600 text-white px-4 py-2 rounded disabled:opacity-50"
       >
         {loading ? "Searching..." : "Search"}
       </button>
-    </div>
+    </form>
   );
 };
 

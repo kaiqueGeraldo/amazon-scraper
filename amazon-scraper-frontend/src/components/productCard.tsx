@@ -1,5 +1,6 @@
 import React from "react";
 import { Product } from "../types/product";
+import Rating from "./rating";
 
 interface ProductCardProps {
   product: Product;
@@ -25,7 +26,11 @@ const ProductCard = ({
       <h4 className="text-sm font-semibold mb-1 line-clamp-2 text-black">
         {product.title}
       </h4>
-      {product.rating && <p className="text-sm text-gray-700">{product.rating}</p>}
+      {product.rating && (
+        <span className="text-sm text-gray-700">
+          <Rating ratingString={product.rating} />
+        </span>
+      )}
       {product.reviews && (
         <p className="text-sm text-gray-600">{product.reviews} reviews</p>
       )}

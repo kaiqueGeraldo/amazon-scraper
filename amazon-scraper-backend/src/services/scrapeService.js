@@ -1,6 +1,5 @@
 const axios = require('axios');
 const { JSDOM } = require('jsdom');
-const fs = require('fs');
 
 async function scrapeService(keyword) {
     const url = `https://www.amazon.com/s?k=${encodeURIComponent(keyword)}`;
@@ -17,9 +16,6 @@ async function scrapeService(keyword) {
 
         const html = response.data;
 
-        // Salva para debug local
-        fs.writeFileSync('debug.html', html);
-
         const dom = new JSDOM(html);
         const document = dom.window.document;
 
@@ -35,7 +31,7 @@ async function scrapeService(keyword) {
             const reviews = item.querySelector('.a-size-base.s-underline-text')?.textContent?.trim() ?? 'N/A';
             const productUrl = item.querySelector('div[data-cy="title-recipe"] a')?.getAttribute('href') ?? '';
 
-            // FILTROS
+            // FILTERS
             const isValidTitle = title && title !== 'Featured from Amazon brands' && title !== 'Sponsored' && title !== 'Sem título';
 
             if (isValidTitle && image) {
