@@ -69,11 +69,7 @@ jobs:
       - name: Build com Next.js
         working-directory: ./amazon-scraper-frontend
         run: ${{ steps.detect-package-manager.outputs.runner }} next build
-
-      - name: Exportar site estático (next export)
-        working-directory: ./amazon-scraper-frontend
-        run: ${{ steps.detect-package-manager.outputs.runner }} next export
-
+        
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
