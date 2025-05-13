@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import SearchBar from "@/components/searchBar";
 import ProductGrid from "@/components/productGrid";
 import { Product } from "@/types/product";
@@ -12,7 +12,7 @@ export default function Home() {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const { favorites, toggleFavorite, isFavorite } = useFavorites();
+  const { toggleFavorite, isFavorite } = useFavorites();
 
   const fetchProducts = async () => {
     if (!keyword.trim()) return;
