@@ -30,7 +30,7 @@ jobs:
             echo "command=install" >> $GITHUB_OUTPUT
             echo "runner=yarn" >> $GITHUB_OUTPUT
             exit 0
-          elif [ -f "${{ github.workspace }}/amazon-scraper-frontend/package.json" ]; then
+          elif [ -f "${{ github.workspace }}/amazon-scraper-frontend/package-lock.json" ]; then
             echo "manager=npm" >> $GITHUB_OUTPUT
             echo "command=ci" >> $GITHUB_OUTPUT
             echo "runner=npx --no-install" >> $GITHUB_OUTPUT
@@ -56,9 +56,9 @@ jobs:
         with:
           path: |
             amazon-scraper-frontend/.next/cache
-          key: ${{ runner.os }}-nextjs-${{ hashFiles('amazon-scraper-frontend/**/package-lock.json', 'amazon-scraper-frontend/**/yarn.lock') }}-${{ hashFiles('amazon-scraper-frontend/**.[jt]s', 'amazon-scraper-frontend/**.[jt]sx') }}
+          key: ${{ runner.os }}-nextjs-${{ hashFiles('amazon-scraper-frontend/package-lock.json', 'amazon-scraper-frontend/yarn.lock') }}-${{ hashFiles('amazon-scraper-frontend/**.[jt]s', 'amazon-scraper-frontend/**.[jt]sx') }}
           restore-keys: |
-            ${{ runner.os }}-nextjs-${{ hashFiles('amazon-scraper-frontend/**/package-lock.json', 'amazon-scraper-frontend/**/yarn.lock') }}-
+            ${{ runner.os }}-nextjs-${{ hashFiles('amazon-scraper-frontend/package-lock.json', 'amazon-scraper-frontend/yarn.lock') }}-
 
       - name: Install dependencies
         working-directory: ./amazon-scraper-frontend
