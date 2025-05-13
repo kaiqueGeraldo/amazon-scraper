@@ -2,6 +2,10 @@
 
 Fullstack application that allows you to search for Amazon products based on a keyword. Results are displayed with image, title, rating (with stars), and reviews, and users can mark products as favorites with local persistence.
 
+🔗 Live Site: [https://amazon-scraper-kaique.vercel.app](https://amazon-scraper-green.vercel.app/)
+
+⚠️ The backend is hosted on Railway, and the scraping API is publicly accessible for educational purposes.
+
 ---
 
 ## 📁 Project Structure
