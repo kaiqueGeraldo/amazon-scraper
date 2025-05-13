@@ -1,8 +1,9 @@
-name: Deploy Scraper Frontend to GitHub Pages
+name: Deploy Scraper Frontend to Pages
 
 on:
   push:
     branches: ["main"]
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -16,40 +17,70 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout código
+      - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
+      - name: Detect package manager
+        id: detect-package-manager
+        working-directory: ./amazon-scraper-frontend
+        run: |
+          if [ -f "${{ github.workspace }}/amazon-scraper-frontend/yarn.lock" ]; then
+            echo "manager=yarn" >> $GITHUB_OUTPUT
+            echo "command=install" >> $GITHUB_OUTPUT
+            echo "runner=yarn" >> $GITHUB_OUTPUT
+            exit 0
+          elif [ -f "${{ github.workspace }}/amazon-scraper-frontend/package-lock.json" ]; then
+            echo "manager=npm" >> $GITHUB_OUTPUT
+            echo "command=ci" >> $GITHUB_OUTPUT
+            echo "runner=npx --no-install" >> $GITHUB_OUTPUT
+            exit 0
+          else
+            echo "Unable to determine package manager"
+            exit 1
+          fi
+
+      - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: "20"
+          cache: ${{ steps.detect-package-manager.outputs.manager }}
+          cache-dependency-path: amazon-scraper-frontend/package-lock.json
 
-      - name: Instalar dependências
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+        with:
+          static_site_generator: next
+
+      - name: Restore cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            amazon-scraper-frontend/.next/cache
+          key: ${{ runner.os }}-nextjs-${{ hashFiles('amazon-scraper-frontend/package-lock.json', 'amazon-scraper-frontend/yarn.lock') }}-${{ hashFiles('amazon-scraper-frontend/**.[jt]s', 'amazon-scraper-frontend/**.[jt]sx') }}
+          restore-keys: |
+            ${{ runner.os }}-nextjs-${{ hashFiles('amazon-scraper-frontend/package-lock.json', 'amazon-scraper-frontend/yarn.lock') }}-
+
+      - name: Install dependencies
         working-directory: ./amazon-scraper-frontend
-        run: npm install
+        run: ${{ steps.detect-package-manager.outputs.manager }} ${{ steps.detect-package-manager.outputs.command }}
 
-      - name: Build do frontend
+      - name: Build com Next.js
         working-directory: ./amazon-scraper-frontend
-        run: npm run build
-
-      - name: Exportar site estático (next export)
-        working-directory: ./amazon-scraper-frontend
-        run: npm run export
-
-      - name: Upload do site para GitHub Pages
+        run: ${{ steps.detect-package-manager.outputs.runner }} next build
+        
+      - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
           path: ./amazon-scraper-frontend/out
 
   deploy:
-    needs: build
-    runs-on: ubuntu-latest
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-
+    runs-on: ubuntu-latest
+    needs: build
     steps:
       - name: Deploy para GitHub Pages
         id: deployment
