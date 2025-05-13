@@ -21,7 +21,7 @@ export default function Home() {
     setError("");
     try {
       const res = await fetch(
-        `http://localhost:3005/api/scrape?keyword=${encodeURIComponent(
+        `https://amazon-scraper-dev.up.railway.app/api/scrape?keyword=${encodeURIComponent(
           keyword
         )}`
       );
